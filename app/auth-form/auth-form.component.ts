@@ -1,4 +1,4 @@
-import { Component, Output, ViewChild, AfterViewInit, EventEmitter, ContentChild, ContentChildren, QueryList, AfterContentInit } from '@angular/core';
+import { Component, Output, ViewChild, ViewChildren, AfterViewInit, EventEmitter, ContentChild, ContentChildren, QueryList, AfterContentInit, ChangeDetectorRef } from '@angular/core';
 
 import { AuthRememberComponent } from './auth-remember.component';
 import { AuthMessageComponent } from './auth-message.component';
@@ -20,6 +20,8 @@ import { User } from './auth-form.interface';
         </label>
         <ng-content select="auth-remember"></ng-content>
         <auth-message [style.display]="(showMessage ? 'inherit' : 'none')"></auth-message>
+        <auth-message [style.display]="(showMessage ? 'inherit' : 'none')"></auth-message>
+        <auth-message [style.display]="(showMessage ? 'inherit' : 'none')"></auth-message>
         <ng-content select="button"></ng-content>
       </form>
     </div>
@@ -28,20 +30,27 @@ import { User } from './auth-form.interface';
 export class AuthFormComponent implements AfterContentInit, AfterViewInit {
   showMessage: boolean;
 
-  @ViewChild(AuthMessageComponent) authMessageComponent: AuthMessageComponent
+  @ViewChildren(AuthMessageComponent) authMessageComponent: QueryList<AuthMessageComponent>
   
   @ContentChildren(AuthRememberComponent) authRememberComponent: QueryList<AuthRememberComponent>;
 
   @Output() submitted: EventEmitter<User> = new EventEmitter<User>();
 
+  constructor(private cd: ChangeDetectorRef) {
+
+  }
+
   ngAfterViewInit(): void {
-    console.log(this.authMessageComponent);
+    if (this.authMessageComponent) {
+      this.authMessageComponent.forEach((message) => {
+        message.days = 30; 
+      });
+
+      // this.cd.detectChanges();
+    }
   }
 
   ngAfterContentInit() {
-    if (this.authMessageComponent) {
-      this.authMessageComponent.days = 30;
-    }
     console.log(this.authRememberComponent);
     // if (this.remeberComponent) {
     //   this.remeberComponent.checked.subscribe((checked: boolean) => {
