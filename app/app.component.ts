@@ -8,6 +8,8 @@ import { User } from './auth-form/auth-form.interface';
     <div>
       <auth-form (submitted)="createUser($event)">
         <h3>Create account</h3>
+        <auth-remember (checked)="rememberUser($event)">
+        </auth-remember>
         <button type="submit">Join us</button>
       </auth-form>
       <auth-form (submitted)="loginUser($event)">
@@ -34,5 +36,4 @@ export class AppComponent {
   loginUser(user: User) {
     console.log('Login', user, this.rememberMe);
   }
-
-}
+} 
