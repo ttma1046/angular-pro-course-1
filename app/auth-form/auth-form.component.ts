@@ -10,7 +10,8 @@ import {
   QueryList,
   AfterContentInit,
   ChangeDetectorRef,
-  ElementRef } from '@angular/core';
+  ElementRef,
+  Renderer } from '@angular/core';
 
 import { AuthRememberComponent } from './auth-remember.component';
 import { AuthMessageComponent } from './auth-message.component';
@@ -18,6 +19,9 @@ import { User } from './auth-form.interface';
 
 @Component({
   selector: 'auth-form',
+  styles: [`
+    .email { border-color: #9f72e6; }
+  `],
   template: `
     <div>
       <form (ngSubmit)="onSubmit(form.value)" #form="ngForm">
@@ -42,7 +46,7 @@ import { User } from './auth-form.interface';
 export class AuthFormComponent implements AfterContentInit, AfterViewInit {
   showMessage: boolean;
 
-  @ViewChild('#email') email: ElementRef;
+  @ViewChild('email') email: ElementRef;
 
   @ViewChildren(AuthMessageComponent) authMessageComponent: QueryList<AuthMessageComponent>
   
@@ -50,12 +54,19 @@ export class AuthFormComponent implements AfterContentInit, AfterViewInit {
 
   @Output() submitted: EventEmitter<User> = new EventEmitter<User>();
 
-  constructor(private cd: ChangeDetectorRef) {
-
-  }
+  constructor(
+    private cd: ChangeDetectorRef,
+    private renderer: Renderer
+    ) {}
 
   ngAfterViewInit(): void {
-    console.log(this.email);
+    this.renderer.setElementAttribute(this.email.nativeElement, 'placeholder', 'Enter your email address');
+    this.renderer.setElementClass(this.email.nativeElement, 'email', true);
+    this.renderer.invokeElementMethod(this.email.nativeElement, 'focus');
+    console.log(this.email.nativeElement);
+    // this.email.nativeElement.setAttribute('placeholder', 'Enter your email');
+    // this.email.nativeElement.classList.add('email');
+    // this.email.nativeElement.focus();
 
     if (this.authMessageComponent) {
       this.authMessageComponent.forEach((message) => {
@@ -67,7 +78,7 @@ export class AuthFormComponent implements AfterContentInit, AfterViewInit {
   }
 
   ngAfterContentInit() {
-    console.log(this.authRememberComponent);
+    // console.log(this.authRememberComponent);
     // if (this.remeberComponent) {
     //   this.remeberComponent.checked.subscribe((checked: boolean) => {
     //     this.showMessage = checked;
