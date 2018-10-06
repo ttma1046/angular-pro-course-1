@@ -46,7 +46,7 @@ export class AuthFormComponent implements AfterContentInit, AfterViewInit {
         message.days = 30; 
       });
 
-      // this.cd.detectChanges();
+      this.cd.detectChanges();
     }
   }
 
