@@ -9,6 +9,9 @@ import { AuthFormComponent } from './auth-form/auth-form.component';
       <button (click)="destoryComponent()">
         Destory
       </button>
+      <button (click)="moveComponent()">
+        Move
+      </button>
       <div #entry></div>
     </div>
   `
@@ -23,7 +26,8 @@ export class AppComponent implements AfterContentInit {
 
   ngAfterContentInit(): void {
     const authFormFactory = this.resolver.resolveComponentFactory(AuthFormComponent);
-    this.authComponent = this.entry.createComponent(authFormFactory);
+    this.entry.createComponent(authFormFactory);
+    this.authComponent = this.entry.createComponent(authFormFactory, 0);
     this.authComponent.instance.title = 'Create account';
     this.authComponent.instance.submitted.subscribe(this.loginUser);
   }
@@ -34,5 +38,9 @@ export class AppComponent implements AfterContentInit {
 
   destoryComponent() {
     this.authComponent.destroy();
+  }
+
+  moveComponent() {
+    this.entry.move(this.authComponent.hostView, 1)
   }
 }
