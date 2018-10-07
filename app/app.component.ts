@@ -5,15 +5,18 @@ import { Component, ViewChild, ViewContainerRef, ComponentFactoryResolver, After
   template: `
     <div>
       <div #entry></div>
-      <ng-container [ngTemplateOutlet]="tmpl">
+      <ng-container [ngTemplateOutlet]="tmpl" [ngTemplateOutletContext]="ctx">
         <span>Test</span>
       </ng-container>
-      <template #tmpl>
-        Todd Motto: England, UK
+      <template #tmpl let-name let-location="location">
+        {{ name }} : {{ location }}
       </template>
     </div>
   `
 })
 export class AppComponent {
-
+  ctx = {
+    $implicit: 'Todd Motto',
+    location: 'England, UK'
+  }
 }
