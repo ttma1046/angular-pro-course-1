@@ -13,6 +13,8 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
         <example-two [user]="user"></example-two>
       </div>
     </div>
+    <credit-card></credit-card>
+
   `
 })
 export class AppComponent {
