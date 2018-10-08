@@ -5,27 +5,14 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.Default,
   template: `
     <div>
-      <button (click)="addProp()">Add property</button>
-      <button (click)="changeUser()">Change user object</button>
-      <button (click)="changeName()">Change name property</button>
-      <div class="users">
-        <example-one [user]="user"></example-one>
-        <example-two [user]="user"></example-two>
-      </div>
+      <ul>
+        <template myFor [myForOf]="items" let-item let-i="index">
+          <li>
+            {{ i }} Member: {{ item.name }}
+          </li>
+        </template>
+      </ul>
     </div>
-    <credit-card></credit-card>
-    <label
-      tooltip="3 digits, back of your card"
-      #myTooltip="tooltip">
-      Enter your security code
-      <span
-        (mouseover)="myTooltip.show()"
-        (mouseout)="myTooltip.hide()"  
-        >
-      (?)
-      </span>
-      <input type="text">
-    </label>
   `
 })
 export class AppComponent {
@@ -34,6 +21,22 @@ export class AppComponent {
     age: 44,
     location: 'California'
   }
+
+  items = [{
+    name: 'Mark Hoppus',
+    age: 44,
+    location: 'California'
+  },
+  {
+    name: 'Mark Hoppus',
+    age: 44,
+    location: 'California'
+  }, {
+    name: 'Mark Hoppus',
+    age: 44,
+    location: 'California'
+  }
+  ]
 
   addProp() {
     this.user.email = 'blink@blink-182.net';
@@ -49,5 +52,12 @@ export class AppComponent {
       age: 41,
       location: 'California'
     }
+  }
+
+  constructor() {
+    setTimeout(() => {
+      // this.items.push({ name: 'Matt Skiba', age: 40, location: 'Cali'});
+       this.items = [...this.items, { name: 'Matt Skiba', age: 40, location: 'Cali'} ];
+    }, 2000);
   }
 }
